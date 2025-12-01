@@ -12,7 +12,7 @@ object Day1:
       directionAndNumbers match
         case Nil => totalZeroes
         case directionAndNumber :: tail =>
-          val value = directionAndNumber.splitAt(1)._2.toInt
+          val value = directionAndNumber.splitAt(1)._2.toInt % 100
           val newTotal = if directionAndNumber.startsWith("L") then
             if (dialRotation - value) < 0 then 100 - Math.abs((dialRotation - value) % 100) else dialRotation - value
           else if (dialRotation + value) > 99 then 0 + Math.abs((dialRotation + value) % 100) else dialRotation + value
