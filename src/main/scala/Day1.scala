@@ -37,7 +37,7 @@ object Day1:
             (0 + Math.abs((dialRotation + value) % 100), 1)
           else (dialRotation + value, 0)
 
-          val clicksToAdd = if ((dialRotation == 0 || dialRotation == 100) && clicks > 0) extraClicks + clicks - 1 else extraClicks + clicks
+          val clicksToAdd = if ((dialRotation == 0 || dialRotation == 100) && clicks > 0) extraClicks else extraClicks + clicks
           //println(s"startRotation: $dialRotation Direction: $directionAndNumber, Pointed at:$newRotation, new clicks: $clicksToAdd, totalClicks: ${totalClicks + clicksToAdd}")
           countAccumulatedZeroes(tail, newRotation, totalClicks + clicksToAdd)
 
