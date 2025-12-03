@@ -27,7 +27,7 @@ object Day3:
       def largestJoltage: Int =
         val (firstBattery, index) = firstLargestBatteryAndIndex
         val secondBattery = secondLargestBattery(index)
-        println(s"first:$firstBattery, second: $secondBattery")
+        //println(s"first:$firstBattery, second: $secondBattery")
         s"$firstBattery$secondBattery".toInt
 
 
