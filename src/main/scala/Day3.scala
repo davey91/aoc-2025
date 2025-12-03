@@ -3,7 +3,7 @@ import Day3.A.Bank
 import scala.io.Source
 
 object Day3:
-  val lines = Source.fromResource("day3/test-input.txt").getLines().toSeq
+  val lines = Source.fromResource("day3/input.txt").getLines().toSeq
 
   object A:
     case class Bank(batteries: String):
@@ -12,7 +12,7 @@ object Day3:
           .zipWithIndex
           .foldRight((0, 0))({ case ((newBattery, index), highestBatteryAndIndex) =>
             //println(s"new: $newBattery, highest: ${highestBatteryAndIndex._1}")
-            if newBattery.asDigit > highestBatteryAndIndex._1 then (newBattery.asDigit, index)
+            if newBattery.asDigit >= highestBatteryAndIndex._1 then (newBattery.asDigit, index)
             else highestBatteryAndIndex
           })
 
@@ -27,7 +27,7 @@ object Day3:
       def largestJoltage: Int =
         val (firstBattery, index) = firstLargestBatteryAndIndex
         val secondBattery = secondLargestBattery(index)
-        //println(s"first:$firstBattery, second: $secondBattery")
+        println(s"first:$firstBattery, second: $secondBattery")
         s"$firstBattery$secondBattery".toInt
 
 
