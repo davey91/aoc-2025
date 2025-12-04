@@ -1,6 +1,7 @@
-import Day4.A.ObjectInGrid
+import Day4.A.{ObjectInGrid}
 import Day4.A.ObjectType.{Empty, RollOfPaper}
 
+import scala.annotation.tailrec
 import scala.io.Source
 
 object Day4:
@@ -17,7 +18,6 @@ object Day4:
           case '@' => RollOfPaper
         }
         ObjectInGrid(objectType, y, x)
-
 
     case class ObjectInGrid(objectType: ObjectType, y: Int, x: Int):
       private val (northY, northX) = (y-1, x)
@@ -36,7 +36,6 @@ object Day4:
       def canBeAccessed(objects: Seq[ObjectInGrid]): Boolean =
         objects.filter(o => allAdjacent.exists(o.isMe)).count(o => o.objectType == RollOfPaper) < 4
 
-
   def day4A(): BigDecimal = {
     val objects = lines.zipWithIndex.flatMap: (line, y) =>
       line.zipWithIndex.map: (char, x) =>
@@ -45,7 +44,30 @@ object Day4:
     objects.count(o => o.objectType == RollOfPaper && o.canBeAccessed(objects.diff(Seq(o))))
   }
 
+  object B:
+    @tailrec
+    final def remove(objects: Seq[ObjectInGrid], count: Int = 0): Int = {
+      val thisCount = objects.count(o => o.objectType == RollOfPaper && o.canBeAccessed(objects.diff(Seq(o))))
+      println(s"current: $thisCount")
+      if thisCount == 0 then count
+      else
+        val updated = objects.map: o =>
+          if o.objectType == RollOfPaper && o.canBeAccessed(objects.diff(Seq(o))) then
+            o.copy(objectType = Empty)
+          else o
+        remove(updated, count + thisCount)
+    }
+
+
+  def day4B(): BigDecimal =
+    import B.*
+    val objects = lines.zipWithIndex.flatMap: (line, y) =>
+      line.zipWithIndex.map: (char, x) =>
+        ObjectInGrid(char, x, y)
+
+    remove(objects)
 
   @main
   def four(): Unit =
     println(s"4A: ${day4A()}")
+    println(s"4B: ${day4B()}")
