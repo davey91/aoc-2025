@@ -1,3 +1,4 @@
+import java.time.Instant
 import scala.io.Source
 
 object Day5:
@@ -50,19 +51,6 @@ object Day5:
           case None        => copy(next = Some(AccumulatingIngredientsRange(newRange)))
           case Some(value) => copy(next = Some(value.fitMeIn(newRange)))
 
-    final def fitMeInAndRemove(newRange: IngredientsRange): AccumulatingIngredientsRange =
-      val maybeNextNext = next match
-        case Some(value) => value.next
-        case None        => None
-
-      if range.overlapsFrom(newRange) then copy(range = range.widenFrom(newRange), next = maybeNextNext)
-      else if range.overlapsTo(newRange) then copy(range = range.widenTo(newRange), next = maybeNextNext)
-      else if range.overlapsFull(newRange) then copy(next = maybeNextNext)
-      else
-        next match
-          case None        => copy(next = Some(AccumulatingIngredientsRange(newRange)))
-          case Some(value) => copy(next = Some(value.fitMeIn(newRange)))
-
     final def totalIngredients: BigInt =
       val thisTotal = range.to + 1 - range.from
       next match
@@ -84,9 +72,7 @@ object Day5:
     val sorted = ingredientRanges.sortBy(_.from)
 
     val accumulatingRange = sorted.tail
-      .foldLeft(AccumulatingIngredientsRange(sorted.head))((acc, range) =>
-        acc.fitMeIn(range)
-      )
+      .foldLeft(AccumulatingIngredientsRange(sorted.head))((acc, range) => acc.fitMeIn(range))
 
     accumulatingRange.totalIngredients
 
